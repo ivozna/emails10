@@ -20,12 +20,14 @@ class EmailsProject:
 
     def send_email(self):
         self.driver.find_element(By.XPATH, "//div[@role='button' and contains(text(), 'Compose')]").click()
-        self.driver.find_element(By.XPATH, "//textarea[@name='to']").send_keys('ira.vozna@gmail.com')
-        self.driver.find_element(By.ID, ':g9').send_keys('subject1')
-        self.driver.find_element(By.ID, ':k7').send_keys('text1')
-        self.driver.find_element(By.ID, ':gj').click()
+        time.sleep(1)
+        self.driver.find_element(By.XPATH, "//textarea[@name='to']").send_keys('ihorrybak106@gmail.com')
+        self.driver.find_element(By.XPATH, "//input[@name='subjectbox']").send_keys('subject1')
+        self.driver.find_element(By.XPATH, "//div[@aria-label='Message Body']").send_keys('text1')
+        self.driver.find_element(By.XPATH, "//div[@role='button' and contains(text(), 'Send')]").click()
+        time.sleep(5)
 
     def get_sent(self):
         self.driver.find_element(By.ID, ':5r').click()
-        assert 'text1' in self.driver.find_element(By.ID, ':1')
+        assert 'text1' in self.driver.find_element(By.XPATH, "//div[@role='main']").text
 
