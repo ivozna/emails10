@@ -21,7 +21,7 @@ class EmailsProject:
         time.sleep(1)
         self.driver.find_element(By.NAME, "toFieldInput").send_keys(to)
         self.driver.find_element(By.XPATH, "//input[@name='subject']").send_keys(subject)
-        self.driver.switch_to.frame("mce_0_ifr")
+        self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "//div[@class='editor']//iframe"))
         self.driver.find_element(By.ID, "tinymce").send_keys(body)
         self.driver.switch_to.default_content()
         self.driver.find_element(By.XPATH, "//div[@class='sendmsg__bottom-controls']/button[contains(@class, 'send')]").click()
