@@ -1,33 +1,39 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 import time
 
 class EmailsProject:
 
     def __init__(self, driver):
         self.driver = driver
-        self.driver.get("https://gmail.com/")
+        self.driver.get("https://mail.ukr.net/")
 
-    def login(self):
-        self.driver.find_element(By.ID, "identifierId").send_keys('ihorrybak106@gmail.com')
-        self.driver.find_element(By.ID, 'identifierNext').click()
-        self.driver.implicitly_wait(10)
-        self.driver.find_element(By.NAME, 'password').send_keys('Rozaroza123#')
-        self.driver.find_element(By.ID, 'passwordNext').click()
-        time.sleep(3)
+    def login(self, login, password):
+        if self.is_logged_in():
+            return
 
-        assert "Inbox" in self.driver.title
+        self.driver.find_element(By.NAME, "login").send_keys(login)
+        self.driver.find_element(By.NAME, 'password').send_keys(password)
+        self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
-    def send_email(self):
-        self.driver.find_element(By.XPATH, "//div[@role='button' and contains(text(), 'Compose')]").click()
+    def send_email(self, to, subject, body):
+        time.sleep(4)
+        self.driver.find_element(By.CLASS_NAME, "compose").click()
         time.sleep(1)
-        self.driver.find_element(By.XPATH, "//textarea[@name='to']").send_keys('ihorrybak106@gmail.com')
-        self.driver.find_element(By.XPATH, "//input[@name='subjectbox']").send_keys('subject1')
-        self.driver.find_element(By.XPATH, "//div[@aria-label='Message Body']").send_keys('text1')
-        self.driver.find_element(By.XPATH, "//div[@role='button' and contains(text(), 'Send')]").click()
-        time.sleep(5)
+        self.driver.find_element(By.NAME, "toFieldInput").send_keys(to)
+        self.driver.find_element(By.XPATH, "//input[@name='subject']").send_keys(subject)
+        self.driver.switch_to.frame("mce_0_ifr")
+        self.driver.find_element(By.ID, "tinymce").send_keys(body)
+        self.driver.switch_to.default_content()
+        self.driver.find_element(By.XPATH, "//div[@class='sendmsg__bottom-controls']/button[contains(@class, 'send')]").click()
+        time.sleep(1)
 
-    def get_sent(self):
-        self.driver.find_element(By.ID, ':5r').click()
-        assert 'text1' in self.driver.find_element(By.XPATH, "//div[@role='main']").text
+    def is_logged_in(self):
+        time.sleep(1)
+        try:
+            self.driver.find_element(By.CLASS_NAME, 'login-button__user')
+        except:
+            return False
+        return True
 
+    def logout(self):
+        self.driver.get("https://mail.ukr.net/q/logout")

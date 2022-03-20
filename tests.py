@@ -1,8 +1,4 @@
 
-def test_python_org(emails):
-    emails.login()
-    emails.get_sent()
-    assert True
+def test_send_email(email_auth):
+    email_auth.send_email('ira.vozzna@ukr.net', 'subject1', 'text1')
 
-def test_send_email(emails):
-    emails.send_email()
