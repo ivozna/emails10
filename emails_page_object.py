@@ -1,6 +1,8 @@
 from selenium.webdriver.common.by import By
 import time
 
+
+
 class EmailsProject:
 
     def __init__(self, driver):
@@ -37,3 +39,20 @@ class EmailsProject:
 
     def logout(self):
         self.driver.get("https://mail.ukr.net/q/logout")
+
+    def check_inbox(self, selection):
+        self.driver.get("https://mail.ukr.net/desktop#msglist/f0/p0")
+        data = self.driver.find_element(By.ID, 'msglist')
+        text = data.get_attribute('innerText')
+
+        for (subject, body) in selection:
+            if subject not in text or body not in text:
+                return False
+        return True
+
+    def create_dictionary(self):
+        self.driver.get("https://mail.ukr.net/desktop#msglist/f0/p0")
+        elements = self.driver.find_elements(By.CLASS_NAME, "msglist__row-subject")
+        text_items = [el.get_attribute('innerText').split() for el in elements][1:11]
+        dictionary = dict(text_items)
+        return dictionary
