@@ -2,7 +2,6 @@ from selenium.webdriver.common.by import By
 import time
 
 
-
 class EmailsProject:
 
     def __init__(self, driver):
@@ -26,7 +25,9 @@ class EmailsProject:
         self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "//div[@class='editor']//iframe"))
         self.driver.find_element(By.ID, "tinymce").send_keys(body)
         self.driver.switch_to.default_content()
-        self.driver.find_element(By.XPATH, "//div[@class='sendmsg__bottom-controls']/button[contains(@class, 'send')]").click()
+        time.sleep(1)
+        self.driver.find_element(By.XPATH,
+                                 "//div[@class='sendmsg__bottom-controls']/button[contains(@class, 'send')]").click()
         time.sleep(1)
 
     def is_logged_in(self):
@@ -56,3 +57,10 @@ class EmailsProject:
         text_items = [el.get_attribute('innerText').split() for el in elements][1:11]
         dictionary = dict(text_items)
         return dictionary
+
+    def make_text(self, subject, body):
+        s = subject + body
+        numbers = sum(c.isdigit() for c in s)
+        letters = sum(c.isalpha() for c in s)
+        return f"""Received mail on theme {subject} with message: {body}. 
+        It contains {letters} letters and {numbers} numbers"""

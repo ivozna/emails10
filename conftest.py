@@ -34,7 +34,7 @@ def email_auth(emails):
 @fixture
 def selection():
     bunch = []
-    for i in range(0, 1):
+    for i in range(0, 3):
         subject = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         body = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         bunch.append((subject, body))
