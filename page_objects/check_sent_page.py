@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from page_objects.base_page import BasePage
 import time
 
+
 class Sent(BasePage):
     DATA = (By.ID, 'msglist')
 
@@ -14,4 +15,8 @@ class Sent(BasePage):
         data = self.find_element(self.DATA)
         text = data.get_attribute('innerText')
 
-        return any([item[0] not in text for item in selection])
+        for item in selection:
+            if item[0] not in text:
+                return False
+
+        return True
